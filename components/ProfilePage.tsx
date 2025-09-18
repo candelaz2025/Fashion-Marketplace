@@ -3,6 +3,10 @@ import { useUser } from './UserContext';
 import { useLanguage } from './LanguageContext';
 import { UserIcon } from './icons/UserIcon';
 import { FacebookIcon } from './icons/FacebookIcon';
+import { InstagramIcon } from './icons/InstagramIcon';
+import { TikTokIcon } from './icons/TikTokIcon';
+import { PinterestIcon } from './icons/PinterestIcon';
+import { YoutubeIcon } from './icons/YoutubeIcon';
 import { StarIcon } from './icons/StarIcon';
 import { CheckCircleIcon } from './icons/CheckCircleIcon';
 import type { ShippingInfo } from '../types';
@@ -28,6 +32,10 @@ export const ProfilePage: React.FC = () => {
     const [pantsSize, setPantsSize] = useState(user?.pantsSize || '');
     const [shoeSize, setShoeSize] = useState(user?.shoeSize || '');
     const [avatarPreview, setAvatarPreview] = useState<string | null>(user?.avatarUrl || null);
+    const [instagramHandle, setInstagramHandle] = useState(user?.instagramHandle || '');
+    const [tiktokHandle, setTiktokHandle] = useState(user?.tiktokHandle || '');
+    const [pinterestHandle, setPinterestHandle] = useState(user?.pinterestHandle || '');
+    const [youtubeChannel, setYoutubeChannel] = useState(user?.youtubeChannel || '');
     const [isConnecting, setIsConnecting] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
     const [shippingAddress, setShippingAddress] = useState<ShippingInfo>(
@@ -43,6 +51,10 @@ export const ProfilePage: React.FC = () => {
             setPantsSize(user.pantsSize || '');
             setShoeSize(user.shoeSize || '');
             setAvatarPreview(user.avatarUrl || null);
+            setInstagramHandle(user.instagramHandle || '');
+            setTiktokHandle(user.tiktokHandle || '');
+            setPinterestHandle(user.pinterestHandle || '');
+            setYoutubeChannel(user.youtubeChannel || '');
             setShippingAddress(user.shippingAddress || {
                 name: user.name, email: user.email, address: '', province: '', country: 'Thailand', postalCode: '', phone: '', carrier: 'flash'
             });
@@ -86,6 +98,11 @@ export const ProfilePage: React.FC = () => {
             pantsSize,
             shoeSize,
             avatarUrl: avatarPreview ?? undefined
+            ,
+            instagramHandle,
+            tiktokHandle,
+            pinterestHandle,
+            youtubeChannel,
         });
         setShowSuccess(true);
         setTimeout(() => {
@@ -108,6 +125,47 @@ export const ProfilePage: React.FC = () => {
     
     const clothingSizeOptions = ['', 'S', 'M', 'L', 'XL', 'XXL', 'One Size'];
     const shoeSizeOptions = ['', ...Array.from({ length: 12 }, (_, i) => (36 + i).toString())]; // Sizes 36 to 47
+
+    const socialFields = [
+        {
+            id: 'instagram',
+            label: t('profile_social_instagram'),
+            value: instagramHandle,
+            onChange: setInstagramHandle,
+            placeholder: '@styleswap',
+            icon: <InstagramIcon />,
+        },
+        {
+            id: 'tiktok',
+            label: t('profile_social_tiktok'),
+            value: tiktokHandle,
+            onChange: setTiktokHandle,
+            placeholder: '@styleswap',
+            icon: <TikTokIcon />,
+        },
+        {
+            id: 'pinterest',
+            label: t('profile_social_pinterest'),
+            value: pinterestHandle,
+            onChange: setPinterestHandle,
+            placeholder: 'https://www.pinterest.com/yourboard',
+            icon: <PinterestIcon />,
+        },
+        {
+            id: 'youtube',
+            label: t('profile_social_youtube'),
+            value: youtubeChannel,
+            onChange: setYoutubeChannel,
+            placeholder: 'https://youtube.com/@channel',
+            icon: <YoutubeIcon />,
+        },
+    ];
+
+    const renderSocialStatus = (value: string) => (
+        <span className={`ml-auto text-xs font-semibold px-3 py-1 rounded-full ${value ? 'bg-teal-100 text-teal-700' : 'bg-gray-100 text-gray-500'}`}>
+            {value ? t('profile_social_status_connected') : t('profile_social_status_disconnected')}
+        </span>
+    );
 
     return (
         <div className="container mx-auto max-w-4xl p-4 sm:p-8">
@@ -162,6 +220,28 @@ export const ProfilePage: React.FC = () => {
                                 )}
                             </button>
                             {!user.facebookConnected && !isConnecting && <p className="text-xs text-center mt-2 text-gray-500">{t('profile_get_points')}</p>}
+                        </div>
+                        <div className="w-full mt-6 bg-white border border-orange-100 rounded-2xl p-4 text-left">
+                            <h3 className="text-lg font-semibold text-[#004D40]">{t('profile_social_title')}</h3>
+                            <p className="text-sm text-gray-500 mt-1 leading-relaxed">{t('profile_social_subtitle')}</p>
+                            <div className="mt-4 space-y-4">
+                                {socialFields.map(field => (
+                                    <label key={field.id} className="block">
+                                        <span className="flex items-center gap-2 text-sm font-medium text-[#004D40]">
+                                            <span className="text-[#FF8C69]">{field.icon}</span>
+                                            {field.label}
+                                            {renderSocialStatus(field.value)}
+                                        </span>
+                                        <input
+                                            type="text"
+                                            value={field.value}
+                                            onChange={(e) => field.onChange(e.target.value)}
+                                            placeholder={t('profile_social_placeholder')}
+                                            className="mt-2 block w-full rounded-lg px-4 py-2 bg-gray-100 border border-gray-300 focus:ring-[#FF8C69] focus:border-[#FF8C69]"
+                                        />
+                                    </label>
+                                ))}
+                            </div>
                         </div>
                     </div>
                     {/* Right Panel: Details Form */}

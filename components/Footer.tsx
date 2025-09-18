@@ -1,6 +1,21 @@
 import React from 'react';
+import { FacebookIcon } from './icons/FacebookIcon';
+import { InstagramIcon } from './icons/InstagramIcon';
+import { TwitterIcon } from './icons/TwitterIcon';
+import { TikTokIcon } from './icons/TikTokIcon';
+import { PinterestIcon } from './icons/PinterestIcon';
+import { YoutubeIcon } from './icons/YoutubeIcon';
 
 export const Footer: React.FC = () => {
+  const socials = [
+    { name: 'Facebook', href: 'https://www.facebook.com/StyleSwapMarket', icon: <FacebookIcon /> },
+    { name: 'Instagram', href: 'https://www.instagram.com/styleswap.market', icon: <InstagramIcon /> },
+    { name: 'X (Twitter)', href: 'https://twitter.com/styleswap_ai', icon: <TwitterIcon /> },
+    { name: 'TikTok', href: 'https://www.tiktok.com/@styleswap', icon: <TikTokIcon /> },
+    { name: 'Pinterest', href: 'https://www.pinterest.com/styleswap', icon: <PinterestIcon /> },
+    { name: 'YouTube', href: 'https://www.youtube.com/@styleswapofficial', icon: <YoutubeIcon /> },
+  ];
+
   return (
     <footer className="bg-white border-t border-orange-200 mt-16">
       <div className="container mx-auto px-4 py-8">
@@ -28,11 +43,22 @@ export const Footer: React.FC = () => {
           </div>
           <div>
             <h3 className="font-semibold text-[#004D40] mb-4">ติดตามเรา</h3>
-            <div className="flex space-x-4">
-              {/* Placeholder for social icons */}
-              <a href="#" className="text-gray-500 hover:text-[#FF8C69]">FB</a>
-              <a href="#" className="text-gray-500 hover:text-[#FF8C69]">IG</a>
-              <a href="#" className="text-gray-500 hover:text-[#FF8C69]">TW</a>
+            <div className="flex flex-wrap gap-3">
+              {socials.map(social => (
+                <a
+                  key={social.name}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`StyleSwap on ${social.name}`}
+                  className="text-gray-500 hover:text-[#FF8C69] transition-colors"
+                >
+                  <span className="sr-only">{social.name}</span>
+                  <div className="p-2 bg-orange-50 rounded-full border border-orange-100 hover:bg-[#FF8C69] hover:text-white transition-colors">
+                    {social.icon}
+                  </div>
+                </a>
+              ))}
             </div>
           </div>
         </div>

@@ -1,20 +1,63 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# StyleSwap Fashion Marketplace
 
-# Run and deploy your AI Studio app
+StyleSwap is a full-featured fashion recommerce experience powered by on-device AI. Shoppers can browse curated looks, chat with an AI stylist, virtually try outfits on their own photos, and share favorites across social media.
 
-This contains everything you need to run your app locally.
+## ✨ Key Features
 
-View your app in AI Studio: https://ai.studio/apps/drive/1_J5bFmvp8PCJ0_-O8rDnyaji87uctJFr
+- **AI shopping concierge** – Embedded floating chat assistant that understands the live product catalogue and returns clickable recommendations in the shopper's language.
+- **Virtual AI fitting room** – Upload a personal image and instantly render a try-on composite for any marketplace product with download and social sharing tools.
+- **Social-first discovery** – One-click share buttons for Facebook, X (Twitter), Pinterest, WhatsApp, plus deep links to StyleSwap's community channels.
+- **Personalized profile & loyalty** – Manage sizes, shipping details, connect social handles, and earn points for linking accounts like Facebook.
+- **Rich marketplace UX** – Category filters, seller pages, wishlists, cart & checkout modal, admin dashboard mock, and multilingual (Thai/English/Chinese) interface support.
 
-## Run Locally
+## 🚀 Getting Started
 
-**Prerequisites:**  Node.js
+1. **Install dependencies**
+   ```bash
+   npm install
+   ```
+2. **Configure environment variables**
+   - Create a `.env.local` file in the project root.
+   - Add your Gemini API key so AI services can run in the browser:
+     ```bash
+     VITE_GOOGLE_GENAI_API_KEY=your_api_key_here
+     ```
+3. **Run the dev server**
+   ```bash
+   npm run dev
+   ```
+   Vite will expose a local URL (usually http://localhost:5173) with hot reloading.
 
+## 🧪 Build & Preview
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+Generate a production build and preview it locally:
+```bash
+npm run build
+npm run preview
+```
+
+The included `app.js` Express server can also serve the built assets:
+```bash
+npm run build
+npm start
+```
+
+## 🛠️ Tech Stack
+
+- **Frontend:** React 19 + TypeScript, Tailwind CSS via CDN, Vite bundler
+- **AI services:** Google Gemini (`@google/genai`) for chat, styling inspiration, and virtual try-on image generation
+- **State & data:** React context providers for users, cart, orders, and language translations
+
+## 📱 Social Media
+
+StyleSwap connects shoppers with the broader community:
+- Facebook: https://www.facebook.com/StyleSwapMarket
+- Instagram: https://www.instagram.com/styleswap.market
+- X (Twitter): https://twitter.com/styleswap_ai
+- TikTok: https://www.tiktok.com/@styleswap
+- Pinterest: https://www.pinterest.com/styleswap
+- YouTube: https://www.youtube.com/@styleswapofficial
+
+---
+
+Need to reset sample data or clear stored profiles? Remove the `styleswap_*` keys from your browser's localStorage.

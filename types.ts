@@ -44,6 +44,10 @@ export interface User {
   shirtSize?: string;
   pantsSize?: string;
   shoeSize?: string;
+  instagramHandle?: string;
+  tiktokHandle?: string;
+  pinterestHandle?: string;
+  youtubeChannel?: string;
 }
 
 export interface StyleIdea {

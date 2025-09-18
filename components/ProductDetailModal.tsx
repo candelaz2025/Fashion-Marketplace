@@ -9,6 +9,7 @@ import { SparklesIcon } from './icons/SparklesIcon';
 import { IdeaCard } from './IdeaCard';
 import { getOutfitForProduct } from '../services/geminiService';
 import { AIFittingRoomModal } from './AIFittingRoomModal';
+import { SocialShareButtons } from './SocialShareButtons';
 
 interface ProductDetailModalProps {
   product: Product;
@@ -131,6 +132,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
                     <p className="text-3xl font-bold text-[#004D40]">{product.price.toLocaleString()} {t('thb')}</p>
                   )}
               </div>
+              <SocialShareButtons product={product} />
               <p className="mt-4 text-gray-700 whitespace-pre-wrap">{product.description}</p>
               
               {product.sizes && product.sizes.length > 0 && (
