@@ -10,9 +10,22 @@ interface AllUsersContextType {
 
 const AllUsersContext = createContext<AllUsersContextType | undefined>(undefined);
 
+const withUserDefaults = (user: Partial<User>): User => ({
+  wishlist: [],
+  facebookConnected: false,
+  shirtSize: '',
+  pantsSize: '',
+  shoeSize: '',
+  instagramHandle: '',
+  tiktokHandle: '',
+  pinterestHandle: '',
+  youtubeChannel: '',
+  ...user,
+} as User);
+
 const initialUsers: User[] = [
-    { name: 'Admin User', email: 'admin@styleswap.com', points: 1000, role: 'admin', registeredAt: new Date('2024-01-01').toISOString(), wishlist: [101, 107], facebookConnected: true, shirtSize: 'M', pantsSize: 'L', shoeSize: '42' },
-    { name: 'Test Customer', email: 'customer@styleswap.com', points: 250, role: 'customer', registeredAt: new Date('2024-02-15').toISOString(), wishlist: [105], facebookConnected: false, shirtSize: 'S', pantsSize: 'M', shoeSize: '38' },
+    withUserDefaults({ name: 'Admin User', email: 'admin@styleswap.com', points: 1000, role: 'admin', registeredAt: new Date('2024-01-01').toISOString(), wishlist: [101, 107], facebookConnected: true, shirtSize: 'M', pantsSize: 'L', shoeSize: '42', instagramHandle: '@styleswap.admin', youtubeChannel: 'https://youtube.com/@styleswapofficial' }),
+    withUserDefaults({ name: 'Test Customer', email: 'customer@styleswap.com', points: 250, role: 'customer', registeredAt: new Date('2024-02-15').toISOString(), wishlist: [105], facebookConnected: false, shirtSize: 'S', pantsSize: 'M', shoeSize: '38', instagramHandle: '@styleswap.customer' }),
 ];
 
 export const AllUsersProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -22,14 +35,7 @@ export const AllUsersProvider: React.FC<{ children: ReactNode }> = ({ children }
       if (storedUsers) {
           const parsed = JSON.parse(storedUsers);
           // Simple migration for users created before new fields
-          return parsed.map((u: Partial<User>) => ({
-              wishlist: [],
-              facebookConnected: false,
-              shirtSize: '',
-              pantsSize: '',
-              shoeSize: '',
-              ...u
-          }));
+          return parsed.map((u: Partial<User>) => withUserDefaults(u));
       }
       return initialUsers;
     } catch (error) {
@@ -52,7 +58,7 @@ export const AllUsersProvider: React.FC<{ children: ReactNode }> = ({ children }
   };
 
   const updateUser = (updatedUser: User) => {
-    setUsers(prevUsers => prevUsers.map(user => (user.email === updatedUser.email ? updatedUser : user)));
+    setUsers(prevUsers => prevUsers.map(user => (user.email === updatedUser.email ? withUserDefaults(updatedUser) : user)));
   };
 
   const deleteUser = (email: string) => {

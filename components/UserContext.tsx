@@ -18,6 +18,19 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [user, setUser] = useState<User | null>(null);
   const { users, addUser, updateUser } = useAllUsers();
 
+  const withUserDefaults = (partial: Partial<User>): User => ({
+      wishlist: [],
+      facebookConnected: false,
+      shirtSize: '',
+      pantsSize: '',
+      shoeSize: '',
+      instagramHandle: '',
+      tiktokHandle: '',
+      pinterestHandle: '',
+      youtubeChannel: '',
+      ...partial,
+  } as User);
+
   useEffect(() => {
     try {
       const storedUser = localStorage.getItem('styleswap_user');
@@ -25,7 +38,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         const parsedUser: User = JSON.parse(storedUser);
         const userExists = users.find(u => u.email === parsedUser.email);
         if (userExists) {
-            setUser(userExists); // Use the data from allUsers context to stay in sync
+            setUser(withUserDefaults(userExists)); // Use the data from allUsers context to stay in sync
         } else {
             localStorage.removeItem('styleswap_user');
         }
@@ -37,9 +50,10 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   }, [users]);
   
   const syncUser = (updatedUser: User) => {
-      setUser(updatedUser);
-      updateUser(updatedUser); // Update the "master" list of users
-      localStorage.setItem('styleswap_user', JSON.stringify(updatedUser));
+      const normalizedUser = withUserDefaults(updatedUser);
+      setUser(normalizedUser);
+      updateUser(normalizedUser); // Update the "master" list of users
+      localStorage.setItem('styleswap_user', JSON.stringify(normalizedUser));
   };
 
 
@@ -48,8 +62,9 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setTimeout(() => {
         const foundUser = users.find(u => u.email.toLowerCase() === email.toLowerCase());
         if (foundUser) {
-          setUser(foundUser);
-          localStorage.setItem('styleswap_user', JSON.stringify(foundUser));
+          const normalized = withUserDefaults(foundUser);
+          setUser(normalized);
+          localStorage.setItem('styleswap_user', JSON.stringify(normalized));
           resolve();
         } else {
           reject(new Error("User not found."));
@@ -66,7 +81,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           reject(new Error("Email already exists."));
           return;
         }
-        const newUser: User = {
+        const newUser: User = withUserDefaults({
           name,
           email,
           points: 100, // Welcome points
@@ -74,10 +89,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           registeredAt: new Date().toISOString(),
           wishlist: [],
           facebookConnected: false,
-          shirtSize: '',
-          pantsSize: '',
-          shoeSize: '',
-        };
+        });
         addUser(newUser);
         setUser(newUser);
         localStorage.setItem('styleswap_user', JSON.stringify(newUser));
